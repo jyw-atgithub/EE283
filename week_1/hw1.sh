@@ -7,5 +7,5 @@ cd $main/problem1
 
 head -n 10 p.txt|tail -n 1 | tee -a output.txt
 
-cat f.txt | tee -a output.txt
+head -n 10 f.txt|tail -n 1 | tee -a output.txt
 
