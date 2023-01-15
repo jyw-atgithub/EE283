@@ -5,7 +5,7 @@ wget https://wfitch.bio.uci.edu/~tdlong/problem1.tar.gz
 tar -xvf problem1.tar.gz
 cd $main/problem1
 
-head -n 10 p.txt|tail -n 1 | tee -a output.txt
+head -n 10 p.txt|tail -n 1 | tee output.txt
 
 head -n 10 f.txt|tail -n 1 | tee -a output.txt
 
