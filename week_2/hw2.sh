@@ -1,12 +1,12 @@
 #!/bin/bash
 mypath="/pub/jenyuw/EE283"
 cd /pub/jenyuw/EE283
-mkdir DNAseq
-mkdir RNAseq
-mkdir ATAGseq
+mkdir -p DNAseq/raw
+mkdir -p RNAseq/raw
+mkdir -p ATAGseq/raw
 
 #for DNA sequences
-cd $mypath/DNAseq
+cd $mypath/DNAseq/raw
 
 for f in /data/class/ecoevo283/public/RAWDATA/DNAseq/*
 do
@@ -15,7 +15,7 @@ ln -s $f .
 done
 
 #for ATAGseq
-cd $mypath/ATAGseq
+cd $mypath/ATAGseq/raw
 
 target="/data/class/ecoevo283/public/RAWDATA/ATACseq"
 #file=$(tail -n +2 $target/README.ATACseq.txt|head -n -3)
@@ -44,7 +44,7 @@ ln -s $read2 ${barcode}.${genotype}.${tissue}.${bio_rep}.R2.fq.gz
 done <<< $(tail -n +2 $target/README.ATACseq.txt|head -n -3)
 
 #for RNAseq
-cd $mypath/RNAseq
+cd $mypath/RNAseq/raw
 target="/data/class/ecoevo283/public/RAWDATA/RNAseq"
 
 file=$(find $target -type f -iname "*.gz"|grep -v "Undetermined")
