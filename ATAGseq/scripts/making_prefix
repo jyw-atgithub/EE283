@@ -1,0 +1,10 @@
+#!/bin/bash
+DNApath=/pub/jenyuw/EE283/DNAseq
+ATAGpath="/pub/jenyuw/EE283/ATAGseq"
+RNApath="/pub/jenyuw/EE283/RNAseq"
+
+cd $ATAGpath
+mkdir -p scripts results results/aligned_bam
+
+ls $ATAGpath/raw/*.R1.fq.gz | sed 's/.R1.fq.gz//g' > $ATAGpath/raw/ATAG_perfix.txt
+head -n 10 $ATAGpath/raw/ATAG_perfix.txt
