@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=workflow
+#SBATCH --job-name=hw5_1
 #SBATCH -A ecoevo283
 #SBATCH -p standard
 #SBATCH --array=1-4
@@ -46,25 +46,3 @@ samtools index ${processed_bam}/${perfix}.dedup.bam
 /opt/apps/gatk/4.2.6.1/gatk HaplotypeCaller --minimum-mapping-quality 30 -ERC GVCF \
 --native-pair-hmm-threads 4 \
 -R $ref_genome -I ${processed_bam}/${perfix}.dedup.bam -O ${SNP}/${perfix}.g.vcf.gz
-
-###-------------------------------------------------------###
-
-##calling the SNP with GATK, Step 2: merge the GVCF files
-##this is not looped. We must wait for all the GVCF are generated
-wait
-
-
-echo "the $SLURM_ARRAY_TASK_ID -th job is done"
-echo $SLURM_ARRAY_JOB_ID
-id=$SLURM_ARRA_JOB_ID
-#SBATCH --depend=afterok:${id}_1:${id}_3
-
-
-if [ $SLURM_ARRAY_TASK_ID = 4 ]
-then
-/opt/apps/gatk/4.2.6.1/gatk CombineGVCFs -R $ref_genome $(printf -- '-V %s ' ${SNP}/*.g.vcf.gz) -O ${SNP}/${perfix}/allsample.g.vcf.gz
-fi
-
-## Syntax: $printf [-v var] format [arguments]
-## The -- is used to tell the program that whatever follows should not be interpreted as a command line option to 'printf'.
-## %s specifier: It is basically a string specifier for string output
