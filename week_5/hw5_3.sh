@@ -22,6 +22,7 @@ module load picard-tools/2.27.1
 mychr=`head -n $SLURM_ARRAY_TASK_ID ${ref_path}/chrome.names.txt | tail -n 1`
 
 ##calling the SNP with GATK, Step 3: really call the SNPs from merged GVCF
+##we split the task into 7, stands for 2L, 2R, 3L, 3R, 4, X, Y
 ##we only care about major chromosomes
 /opt/apps/gatk/4.2.6.1/gatk --java-options "-Xmx3g" GenotypeGVCFs \
 --intervals $mychr -stand-call-conf 5 \
