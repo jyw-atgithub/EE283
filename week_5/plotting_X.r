@@ -4,23 +4,30 @@ tab1 <- as.data.frame(t(tab0))[-1,]
 colnames(tab1) <- c("ADL06","ADL09","ADL10","ADL14")
 row.names(tab1) <- paste("row", (1:nrow(tab1)))
 
-tab2 <-tab1[,tab1$ADL06 == 0]
-
 mtx1 <- as.matrix(tab1)
 image(mtx1, col=c("green","yellow","red"), breaks=c(-0.5,0.5,1.5,2.5))
 
+##remove the "1" and "-1" alleles
+tab <-tab1[tab1$ADL06 == '0'|tab1$ADL06 == '2',]
+tab <-tab[tab$ADL09 == '0'|tab$ADL09 == '2',]
+tab <-tab[tab$ADL10 == '0'|tab$ADL10 == '2',]
+tab <-tab[tab$ADL14 == '0'|tab$ADL14 == '2',]
+##pick only SNPs where two of the strains are 0/0 and the other two 1/1
+tab <- tab[rowSums(tab[,-5]) ==4,]
+#tab2 <- na.omit(tab)
 
-tab2 <- as.data.frame(tab0)[,-1]
 mtx2 <- as.matrix(tab2)
-#y <- c(0:3)
-#x <- c(-1:2)
 image(mtx2, col=c("green","yellow","red"), breaks=c(-0.5,0.5,1.5,2.5))
+
+
+
 
 #heatmap(tab1, scale="column")
 
 library(ggplot2)
 library(reshape)
 
+##it is required to name the columns and rows, so the melt() cna function well.
 mtab <- melt(mtx1)
 mtab$value=as.factor(mtab$value)
 
