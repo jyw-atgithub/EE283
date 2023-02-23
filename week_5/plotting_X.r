@@ -13,7 +13,7 @@ tab <-tab[tab$ADL09 == '0'|tab$ADL09 == '2',]
 tab <-tab[tab$ADL10 == '0'|tab$ADL10 == '2',]
 tab <-tab[tab$ADL14 == '0'|tab$ADL14 == '2',]
 ##pick only SNPs where two of the strains are 0/0 and the other two 1/1
-tab <- tab[rowSums(tab[,-5]) ==4,]
+tab <- tab[rowSums(tab) ==4,]
 #tab2 <- na.omit(tab)
 
 mtx2 <- as.matrix(tab2)
