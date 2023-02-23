@@ -3,7 +3,7 @@
 ##1. collecting the pefix of files
 ##2. index the genome
 DNApath=/pub/jenyuw/EE283/DNAseq
-ATAGpath="/pub/jenyuw/EE283/ATAGseq"
+ATACpath="/pub/jenyuw/EE283/ATACseq"
 RNApath="/pub/jenyuw/EE283/RNAseq"
 ref_path="/pub/jenyuw/EE283/Reference"
 ref_genome="$ref_path/dmel-all-chromosome-r6.13.fasta"
@@ -16,12 +16,12 @@ mkdir -p scripts results results/aligned_bam
 ls $DNApath/raw/*_1.fq.gz | sed 's/_1.fq.gz//g' > ${DNApath}/raw/prefix.txt
 head -n 10 ${DNApath}/raw/prefix.txt
 
-##ATAGseq
-cd $ATAGpath
+##ATACseq
+cd $ATACpath
 mkdir -p scripts results/aligned_bam
 
-ls $ATAGpath/raw/*.R1.fq.gz | sed 's/.R1.fq.gz//g' > $ATAGpath/raw/ATAG_perfix.txt
-head -n 10 $ATAGpath/raw/ATAG_perfix.txt
+ls $ATACpath/raw/*.R1.fq.gz | sed 's/.R1.fq.gz//g' > $ATACpath/raw/ATAC_perfix.txt
+head -n 10 $ATACpath/raw/ATAC_perfix.txt
 
 ##RNAseq
 cd $RNApath
