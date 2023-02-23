@@ -12,6 +12,7 @@ ATACpath="/pub/jenyuw/EE283/ATACseq"
 RNApath="/pub/jenyuw/EE283/RNAseq"
 ref_path="/pub/jenyuw/EE283/Reference"
 ref_genome="$ref_path/dmel-all-chromosome-r6.13.fasta"
+trimmomatic="/opt/apps/trimmomatic/0.39"
 
 ##preperation
 module load picard-tools/2.27.1
@@ -35,8 +36,10 @@ base_prefix=`basename $prefix`
 
 #trimming
 java -jar /opt/apps/trimmomatic/0.39/trimmomatic-0.39.jar PE -threads $SLURM_CPUS_PER_TASK -phred33 \
-${prefix}.R1.fq.gz ${prefix}.R2.fq.gz -–baseout ${trimmed}/${base_prefix}  \
-ILLUMINACLIP:/opt/apps/trimmomatic/0.39/adapters/TruSeq3-PE.fa:2:30:10:2:True LEADING:3 TRAILING:3 MINLEN:20
+${prefix}.R1.fq.gz ${prefix}.R2.fq.gz \
+–baseout ${trimmed}/${base_prefix} \
+ILLUMINACLIP:${trimmomatic}/adapters/TruSeq3-PE.fa:2:30:10:2:True LEADING:3 TRAILING:3 MINLEN:20
+
 
 
 ##ATACseq mapping to USCS-version Reference genome
