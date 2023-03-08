@@ -91,3 +91,29 @@ heatmap.2( assay(rld)[ topVarGenes, ], margins = c(10, 10), cexRow=0.7, cexCol=0
 dev.off()
 
 ggplot(data=res, aes(x=log2FoldChange, y=pvalue)) + geom_point()
+
+##Failed 
+##BiocManager::install('EnhancedVolcano')
+library('ggplot2')
+tmp <- readRDS("de_df_for_volcano.rds")
+de <- tmp[complete.cases(tmp), ]
+ggplot(data=de, aes(x=log2FoldChange, y=pvalue)) + geom_point()
+
+p <- ggplot(data=de, aes(x=log2FoldChange, y=-log10(pvalue))) + geom_point() + theme_minimal()
+
+# add a column of NAs
+de$diffexpressed <- "NO"
+# if log2Foldchange > 0.6 and pvalue < 0.05, set as "UP" 
+de$diffexpressed[de$log2FoldChange > 0.6 & de$pvalue < 0.05] <- "UP"
+# if log2Foldchange < -0.6 and pvalue < 0.05, set as "DOWN"
+de$diffexpressed[de$log2FoldChange < -0.6 & de$pvalue < 0.05] <- "DOWN"
+
+p <- ggplot(data=de, aes(x=log2FoldChange, y=-log10(pvalue), col=diffexpressed)) + geom_point() + theme_minimal()
+
+de$delabel <- NA
+de$delabel[de$diffexpressed != "NO"] <- de$gene_symbol[de$diffexpressed != "NO"]
+
+ggplot(data=de, aes(x=log2FoldChange, y=-log10(pvalue), col=diffexpressed, label=delabel)) + 
+    geom_point() + 
+    theme_minimal() +
+    geom_text()
