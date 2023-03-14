@@ -113,7 +113,10 @@ p <- ggplot(data=de, aes(x=log2FoldChange, y=-log10(pvalue), col=diffexpressed))
 de$delabel <- NA
 de$delabel[de$diffexpressed != "NO"] <- de$gene_symbol[de$diffexpressed != "NO"]
 
+
+pdf("volcano.pdf", width=5 , height=7)
 ggplot(data=de, aes(x=log2FoldChange, y=-log10(pvalue), col=diffexpressed, label=delabel)) + 
     geom_point() + 
     theme_minimal() +
     geom_text()
+dev.off()
