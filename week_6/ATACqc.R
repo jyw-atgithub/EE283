@@ -20,8 +20,13 @@ bamfile <- "/pub/jenyuw/EE283/ATACseq/results/processed_bam/A4.ED.2.dedup.bam"
 # BAM file name
 bamfile.labels <- gsub(".dedup.bam", "", basename(bamfile))
 # generate fragement size distribution
+pdf("fragSize.pdf", width=6 , height=6)
 fragSize <- fragSizeDist(bamfile, bamfile.labels)
+dev.off()
+
+pdf("LibComplexity.pdf", width=6 , height=6)
 estimateLibComplexity(readsDupFreq(bamfile, index=bamfile))
+dev.off()
 
 tags <- c("AS", "XN", "XM", "XO", "XG", "NM", "MD", "YS", "YT")
 
@@ -75,8 +80,9 @@ sigs = enrichedFragments(bamfiles, TSS=TSS, librarySize=librarySize, seqlev=seql
 names(sigs) <- gsub(".bam", "", basename(names(sigs)))
 sigs.log2 <- lapply(sigs, function(.ele) log2(.ele+1))
 
+pdf("Heatmap.pdf", width=6 , height=6)
 featureAlignedHeatmap(sigs.log2, reCenterPeaks(TSS, width=ups+dws), zeroAt=.5, n.tile=NTILE)
-
+dev.off()
 
 library(GenomicFeatures)
 txdbmm = makeTxDbFromGFF(file = "/pub/jenyuw/EE283/Reference/dmel-all-r6.13.gtf")
