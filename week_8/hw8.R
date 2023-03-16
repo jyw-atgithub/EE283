@@ -23,17 +23,17 @@ treat=str_sub(mal2$pool,2,2)
 anova(lm(asin(sqrt(freq)) ~ treat + founder + treat:founder, data=mal2))
 anova(lm(asin(sqrt(freq)) ~ founder + treat %in% founder, data=mal2))
 
+#calculate the p value manually
 mylog10pmodel <- function(df){
   out = anova(lm(asin(sqrt(freq)) ~ treat + founder + treat:founder, data=df))
-  myF = -pf(out[1,3]/out[2,3],out[1,1],out[2,1],lower.tail=FALSE,
-            log.p=TRUE)/log(10)
+  myF = -log10(out[3,5])
   as.numeric(myF)
 }
 
+##extract the right P-value
 mylog10pmodel2 <- function(df){
   out = anova(lm(asin(sqrt(freq)) ~ founder + treat %in% founder, data=df))
-  myF = -pf(out[1,3]/out[2,3],out[1,1],out[2,1],lower.tail=FALSE,
-            log.p=TRUE)/log(10)
+  myF = -log10(out[2,5])
   as.numeric(myF)
 }
 ## remove the NA values!!
@@ -52,12 +52,11 @@ mal4 = mal  %>%
   nest() %>%
   mutate(logp2 = map_dbl(data, mylog10pmodel2))
 
-mal5 = inner_join(
-  mal3,mal4,
-copy = FALSE
-)
+mal5 = mal3 %>%
+  select(-data) %>%
+  inner_join(mal4 %>% select(-data))
 
-
+write.table(mal5[,c("chr","pos", "logp","logp2")] , file = "mal5.tsv")
 
 
 #group_by, nest, and map.
